@@ -31,7 +31,7 @@ class Category(MPTTModel):
         while k is not None:
             full_path.append(k.title)
             k = k.parent
-        return ' / '.join(full_path[::-1])
+        return ' >> '.join(full_path[::-1])
 
     def image_tag(self):
         return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
@@ -65,8 +65,6 @@ class Mekan(models.Model):
 
     def image_tag(self):
         return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
-
-
     image_tag.short_description = 'Image'
 
 class Images(models.Model):

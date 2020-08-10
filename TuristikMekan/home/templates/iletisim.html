@@ -1,76 +1,38 @@
-{% extends "homebase.html" %}
+{% extends 'homebase.html' %}
 
 {% block title %} İletişim {{ setting.company }} {% endblock %}
 {% block keywords %} {{ setting.keywords }} {% endblock %}
-{% block description %} {{ setting.description }} {% endblock %}
+{% block description %} {{ setting.description }}{% endblock %}
 
 {% block head %}
-
-    <link rel='shortcut icon' type='image/x-icon' href='{{setting.icon.url}}' />
-
+    <link rel='shortcut icon' type='image/x-icon' href='{{ setting.icon.url }}' />
 {% endblock %}
-
-
-{% block sidebar %}
-    {% include "sidebar.html" %}
-{% endblock %}
-
 
 {% block content %}
-
-    <div id="breadcrumb">
-        <div class="container">
-            <ul class="breadcrumb">
-                <li> <a href="/"> Anasayfa </a> </li>
-                <li class="active">İletişim</li>
-
-            </ul>
+    <div class="span4">
+        <div class="well">
+            <h3 class="title">İletişim Formu</h3>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{message.tags}}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="SEND FORM">
+            </form>
         </div>
     </div>
 
-
-    <div class="section">
-
-        <div class="container">
-
-            <div class="row">
-
-                <div class="col-md-4">
-                    <div class="billing-details">
-
-                        <div class="section-title">
-                            <h3 class="title">İletişim Formu</h3>
-                        </div>
-
-                        {% if messages %}
-                            {% for message in messages  %}
-                                <div class="alert alert-{{message.tags}}"role="alert">
-                                    {{message}}
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-
-                        <form action="" method="post">
-                            {% csrf_token %}
-                            {{ form.as_p }}
-                            <input type="submit" value="SEND FORM" >
-                        </form>
-
-                    </div>
-                </div>
-
-                <div class="col-md-8">
-                    <div class="section-title">
-                        <h3 class="title">İletişim Bilgilerimiz</h3>
-                    </div>
-                    {{setting.contact|safe}}
-                </div>
-
-            </div>  <!-- /row -->
-
-        </div>   <!-- /container -->
-
+    <div class="span8">
+        <div class="well">
+            <div class="section-title">
+                <h3 class="title">İletişim Bilgilerimiz</h3>
+            </div>
+            {{ setting.contact|safe }}
+        </div>
     </div>
-
-
 {% endblock %}
