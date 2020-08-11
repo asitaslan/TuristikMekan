@@ -5,7 +5,7 @@
         <ul class="nav nav-list">
             {% recursetree category %}
                 <li>
-                    <a href="/category/{{ node.id }}/{{ node.slug }}"{% if not node.is_leaf_node %}  class="icon-chevron-right"{% endif %} >{{ node.title }}</a>
+                    <a  href="/category/{{ node.id }}/{{ node.slug }}" {% if not node.is_leaf_node %}  class="icon-chevron-right"{% endif %} >{{ node.title }}</a>
                     {% if not node.is_leaf_node %}
                         <ul class="children">
                             {{ children }}

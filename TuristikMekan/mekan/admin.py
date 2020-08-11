@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from mptt.admin import DraggableMPTTAdmin
 
-from mekan.models import Mekan, Category, Images
+from mekan.models import Mekan, Category, Images, Comment
 
 
 class MekanImageInLine(admin.TabularInline):
@@ -59,6 +59,11 @@ class MekanAdmin(admin.ModelAdmin):
 class ImagesAdmin(admin.ModelAdmin):
     list_display = ['title', 'mekan', 'image']
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['subject', 'comment', 'mekan',  'status']
+    list_filter = ['status']
+
 admin.site.register(Mekan, MekanAdmin)
 admin.site.register(Category, CategoryAdmin2)
 admin.site.register(Images,ImagesAdmin)
+admin.site.register(Comment, CommentAdmin)

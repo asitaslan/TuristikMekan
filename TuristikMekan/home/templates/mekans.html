@@ -1,0 +1,37 @@
+{% extends 'homebase.html' %}
+
+{% block title %} {{ categorydata.title }} mekans {% endblock %}
+{% block keywords %} {{ categorydata.keywords }} {% endblock %}
+{% block description %} {{ categorydata.description }}{% endblock %}
+
+{% block head %}
+    <link rel='shortcut icon' type='image/x-icon' href='{{ setting.icon.url }}' />
+{% endblock %}
+{% block sidebar %}
+    {% include "sidebar.html" %}
+{% endblock %}
+{% block content %}
+    <div class="span9">
+        <div class="well well-small">
+            <h3>{{ categorydata.title }} Ürünleri</h3>
+            <hr>
+            <div class="row-fluid">
+                <ul class="thumbnails">
+                    {% for rs in mekans %}
+                        <li class="span4">
+                            <div class="thumbnail">
+                                <a href="/mekan/{{ rs.id }}/{{ rs.slug }}" class="overlay"></a>
+                                <a class="zoomTool" href="/mekan/{{ rs.id }}/{{ rs.slug }}" title="add to cart"><span class="icon-search"></span>İncele</a>
+                                <a href="/mekan/{{ rs.id }}/{{ rs.slug }}"><img style="width:250px; height:250px;" src="{{ rs.image.url }}" alt=""></a>
+                                <div class="caption cntr">
+                                    <p>{{ rs.title }}</p>
+                                    <br class="clr">
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

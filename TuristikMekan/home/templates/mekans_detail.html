@@ -1,0 +1,160 @@
+{% extends 'homebase.html' %}
+
+{% block title %} {{ mekan.title }} {% endblock %}
+{% block keywords %} {{ mekan.keywords }} {% endblock %}
+{% block description %} {{ mekan.description }}{% endblock %}
+
+{% block head %}
+    <link rel='shortcut icon' type='image/x-icon' href='{{ setting.icon.url }}' />
+{% endblock %}
+
+{% block sidebar %}
+    {% include "sidebar.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="span9">
+        <ul class="breadcrumb">
+            <li><a href="#">Home</a> <span class="divider">/</span></li>
+            <li><a href="#">Mekans</a> <span class="divider">/</span></li>
+            <li><a href="/category/{{ mekan.category_id }}/{{ mekan.category.slug }}">{{ mekan.category }}</a> <span class="divider">/</span></li>
+            <li class="active">{{ mekan.title }}</li>
+        </ul>
+        <div class="well well-small">
+            <div class="row-fluid">
+                <div class="span5">
+                    <div id="myCarousel" class="carousel slide cntr">
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <a href="#"> <img src="{{ mekan.image.url }}" alt="" style="width:100%"></a>
+                            </div>
+                            {% for rs in images %}
+                                <div class="item">
+                                    <a href="#"> <img src="{{ rs.image.url }}" alt="" style="width:100%"></a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+                        <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+                    </div>
+                </div>
+                <div class="span7">
+                    <h3>{{ mekan.title }}</h3>
+                    <hr class="soft"/>
+
+                    <form class="form-horizontal qtyFrm">
+                        <div class="control-group">
+                            <label class="control-label"><span>Ulke</span></label>
+                            <div class="controls">
+                                {{ mekan.ulke }}
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label"><span>Sehir</span></label>
+                            <div class="controls">
+                                {{ mekan.sehir }}
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label"><span>Mekan Turu</span></label>
+                            <div class="controls">
+                                {{ mekan.keywords }}
+                            </div>
+                        </div>
+                        <p>
+                    </form>
+                </div>
+            </div>
+            <hr class="softn clr"/>
+
+
+            <ul id="mekanDetail" class="nav nav-tabs">
+                <li class="active"><a href="#home" data-toggle="tab">Mekan Detaylari</a></li>
+                <li class=""><a href="#profile" data-toggle="tab">Yorumlar </a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content tabWrapper">
+                <div class="tab-pane fade active in" id="home">
+                    <h4>{{ mekan.detail | safe }}</h4>
+                </div>
+                <div class="tab-pane fade" id="profile">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <form class="form-horizontal" action="/mekan/addcomment/{{ mekan.id }}" method="post">
+                        {% csrf_token %}
+                        <h3>Yorum Yap</h3>
+                        <div class="control-group">
+                            <label class="control-label">Konu <sup>*</sup></label>
+                            <div class="controls">
+                                <input class="input" type="text" name="subject" id="id_subject" placeholder="Subject">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Yorum yap <sup>*</sup></label>
+                            <div class="controls">
+                                <textarea class="input" name="comment" id="id_comment" placeholder="Your review"></textarea>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Degerlendirme: <sup>*</sup></label>
+                            <div class="controls">
+                                <input type="radio" id="star5" name="rate" value="5"/>5<label for="star5"></label>
+                                <input type="radio" id="star4" name="rate" value="4"/>4<label for="star4"></label>
+                                <input type="radio" id="star3" name="rate" value="3"/>3<label for="star3"></label>
+                                <input type="radio" id="star2" name="rate" value="2"/>2<label for="star2"></label>
+                                <input type="radio" id="star1" name="rate" value="1"/>1<label for="star1"></label>
+                            </div>
+
+                        </div>
+                        {% if user.id is not None %}
+                            <div class="control-group">
+                                <div class="controls">
+                                    <button class="btn-primary">Send Comment</button>
+                                </div>
+                            </div>
+                        {% else %}
+                            Yorum Eklemek için <a href="/login"> giris</a> yapin!
+                        {% endif %}
+                    </form>
+
+
+                    {% for rs in comments %}
+                        <table border="1">
+                            <tr>
+                                <th> Name  </th>
+                                <th><div><a href="#"><i class="fa fa-user-o"></i> <b>{{ rs.user.first_name }}</b></a> </div></th>
+                            </tr>
+                            <tr>
+                                <th> Date  </th>
+                                <th><div><a href="#"><i class="fa fa-user-o"></i> <b>{{ rs.created_at }}</b></a> </div></th>
+                            </tr>
+                            <tr>
+                                <th> Star </th>
+                                <th><div class="review-rating pull-right">
+                                    <i class="fa fa-star {% if rs.rate < 1 %}-o empty{% endif %}"></i>
+                                    <i class="fa fa-star {% if rs.rate < 2 %}-o empty{% endif %}"></i>
+                                    <i class="fa fa-star {% if rs.rate < 3 %}-o empty{% endif %}"></i>
+                                    <i class="fa fa-star {% if rs.rate < 4 %}-o empty{% endif %}"></i>
+                                    <i class="fa fa-star {% if rs.rate < 5 %}-o empty{% endif %}"></i>
+                                </div></th>
+                            </tr>
+                            <tr>
+                                <th> Comment </th>
+                                <th>
+                                    <div class="review-body"> <b>{{ rs.subject }}</b>
+                                        <p>{{ rs.comment }}</p>
+                                    </div>
+                                </th>
+                            </tr>
+                        </table>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

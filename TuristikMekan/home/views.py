@@ -4,17 +4,19 @@ from django.shortcuts import render
 
 # Create your views here.
 from home.models import Setting, ContactFormu, ContactFormMessage
-from mekan.models import Category, Mekan
+from mekan.models import Category, Mekan, Images, Comment
 
 
 def index(request):
     setting = Setting.objects.get(pk=1)
     sliderdata = Mekan.objects.all()[:10]
     category = Category.objects.all()
+    lastmekans= Mekan.objects.all()[:6]
     context = {
         'setting': setting,
         'sliderdata': sliderdata,
         'category': category,
+         'lastmekans' : lastmekans,
     }
     return render(request, 'index.html', context)
 
@@ -43,3 +45,29 @@ def iletisim(request):
     form = ContactFormu()
     context = {'setting': setting, 'category': category, 'form': form}
     return render(request, 'iletisim.html', context)
+
+
+def mekans_category(request, id, slug):
+    category = Category.objects.all()
+    categorydata = Category.objects.get(pk=id)
+    mekans= Mekan.objects.filter(category_id=id)
+    context = {'mekans': mekans,
+               'category': category,
+               'categorydata': categorydata
+               }
+    return render(request, 'mekans.html', context)
+
+def mekans_detail(request, id, slug):
+    setting = Setting.objects.get(pk=1)
+    category = Category.objects.all()
+    mekan = Mekan.objects.get(pk=id)
+    images = Images.objects.filter(mekan_id=id)
+    comments = Comment.objects.filter(mekan_id=id, status='True')
+    context = {'mekan': mekan,
+               'category': category,
+               'images': images,
+               'comments': comments,
+               'setting': setting,
+
+               }
+    return render(request, 'mekans_detail.html', context)

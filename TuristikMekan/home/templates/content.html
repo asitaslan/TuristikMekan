@@ -8,33 +8,15 @@
                 <div class="carousel-inner">
                     <div class="item active">
                         <ul class="thumbnails">
+                            {% for rs in lastmekans %}
                             <li class="span3">
                                 <div class="thumbnail">
-                                    <a class="zoomTool" href="product_details.html" title="add to cart"><span class="icon-search"></span> QUICK VIEW</a>
+                                    <a class="zoomTool" href="/mekan/{{ rs.id }}/{{ rs.slug }}" title="add to cart"><span class="icon-search"></span> Incele</a>
                                     <a href="#" class="tag"></a>
-                                    <a href="product_details.html"><img src="{% static 'img/bootstrap-ring.png' %}" alt="bootstrap-ring"></a>
+                                    <a href="/mekan/{{ rs.id }}/{{ rs.slug }}"><img style="width: 200px; height: 200px;" src="{{ rs.image.url }}" alt="bootstrap-ring"></a>
                                 </div>
                             </li>
-                            <li class="span3">
-                                <div class="thumbnail">
-                                    <a class="zoomTool" href="product_details.html" title="add to cart"><span class="icon-search"></span> QUICK VIEW</a>
-                                    <a href="#" class="tag"></a>
-                                    <a  href="product_details.html"><img src="{% static 'img/i.jpg' %}" alt=""></a>
-                                </div>
-                            </li>
-                            <li class="span3">
-                                <div class="thumbnail">
-                                    <a class="zoomTool" href="product_details.html" title="add to cart"><span class="icon-search"></span> QUICK VIEW</a>
-                                    <a href="#" class="tag"></a>
-                                    <a  href="product_details.html"><img src="{% static 'img/g.jpg' %}" alt=""></a>
-                                </div>
-                            </li>
-                            <li class="span3">
-                                <div class="thumbnail">
-                                    <a class="zoomTool" href="product_details.html" title="add to cart"><span class="icon-search"></span> QUICK VIEW</a>
-                                    <a  href="product_details.html"><img src="{% static 'img/s.png' %}" alt=""></a>
-                                </div>
-                            </li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <div class="item">
