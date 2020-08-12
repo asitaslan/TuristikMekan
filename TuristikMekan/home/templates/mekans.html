@@ -13,7 +13,7 @@
 {% block content %}
     <div class="span9">
         <div class="well well-small">
-            <h3>{{ categorydata.title }} Ürünleri</h3>
+            <h3>{{ categorydata.title }}</h3>
             <hr>
             <div class="row-fluid">
                 <ul class="thumbnails">
@@ -21,7 +21,7 @@
                         <li class="span4">
                             <div class="thumbnail">
                                 <a href="/mekan/{{ rs.id }}/{{ rs.slug }}" class="overlay"></a>
-                                <a class="zoomTool" href="/mekan/{{ rs.id }}/{{ rs.slug }}" title="add to cart"><span class="icon-search"></span>İncele</a>
+                                <a class="zoomTool" href="/mekan/{{ rs.id }}/{{ rs.slug }}" title=""><span class="icon-search"></span>İncele</a>
                                 <a href="/mekan/{{ rs.id }}/{{ rs.slug }}"><img style="width:250px; height:250px;" src="{{ rs.image.url }}" alt=""></a>
                                 <div class="caption cntr">
                                     <p>{{ rs.title }}</p>

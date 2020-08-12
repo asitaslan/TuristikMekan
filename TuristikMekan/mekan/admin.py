@@ -55,6 +55,7 @@ class MekanAdmin(admin.ModelAdmin):
     readonly_fields = ('image_tag',)
     list_filter = ['status', 'category']
     inlines = [MekanImageInLine]
+    prepopulated_fields = {'slug': ('title',)}
 
 class ImagesAdmin(admin.ModelAdmin):
     list_display = ['title', 'mekan', 'image']

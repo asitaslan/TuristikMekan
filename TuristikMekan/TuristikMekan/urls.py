@@ -28,9 +28,12 @@ urlpatterns = [
     path('index/', include('home.urls')),
     path('hakkimizda/', views.hakkimizda, name='hakkimizda'),
     path('iletisim/', views.iletisim, name='iletisim'),
+    path('mekans/', views.mekans, name='mekans'),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('search/', views.mekan_search, name='product_search'),
+    path('search_auto/', views.mekan_search_auto, name="mekan_search_auto"),
     path('category/<int:id>/<slug:slug>/', views.mekans_category, name='category_mekans'),
-    path('mekan/<int:id>/<slug:slug>/', views.mekans_detail, name='product_detail'),
+    path('mekan/<int:id>/<slug:slug>/', views.mekans_detail, name='mekan_detail'),
 
 ]
 if settings.DEBUG:  # new
