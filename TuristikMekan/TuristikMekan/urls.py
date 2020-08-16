@@ -23,13 +23,15 @@ from home import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
+    path('mekan/', include('mekan.urls')),
     path('home/', include('home.urls')),
     path('AnaSayfa/', include('home.urls')),
     path('index/', include('home.urls')),
+    path('user/', include('user.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     path('hakkimizda/', views.hakkimizda, name='hakkimizda'),
     path('iletisim/', views.iletisim, name='iletisim'),
     path('mekans/', views.mekans, name='mekans'),
-    path('ckeditor/', include('ckeditor_uploader.urls')),
     path('search/', views.mekan_search, name='product_search'),
     path('search_auto/', views.mekan_search_auto, name="mekan_search_auto"),
     path('category/<int:id>/<slug:slug>/', views.mekans_category, name='category_mekans'),
@@ -37,6 +39,8 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout_view'),
     path('login/', views.login_view, name='login_view'),
     path('signup/', views.signup_view, name='signup_view'),
+    path('sss/', views.faq, name='faq'),
+
 
 ]
 if settings.DEBUG:  # new

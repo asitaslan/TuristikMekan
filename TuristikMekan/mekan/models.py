@@ -1,8 +1,10 @@
+from ckeditor.widgets import CKEditorWidget
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
-from django.forms import ModelForm
+from django.forms import ModelForm, Select, TextInput, FileInput
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from mptt.fields import TreeForeignKey
@@ -49,7 +51,7 @@ class Mekan(models.Model):
         ('True', 'Evet'),
         ('False', 'Hayır'),
     )
-
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)  # relation with Category table
     title = models.CharField(max_length=150)
     keywords = models.CharField(blank=True, max_length=255)
@@ -73,6 +75,25 @@ class Mekan(models.Model):
     def get_absolute_url(self):
          return reverse('mekan_detail', kwargs={'slug': self.slug})
 
+class MekanForm(ModelForm):
+    class Meta:
+        model = Mekan
+        fields = ['category', 'title', 'keywords', 'sehir', 'ulke','description', 'image', 'detail', 'slug']
+        widgets = {
+            'category': Select(attrs={'class': 'input', 'placeholder': 'amount'}, choices={Category.objects.all()}),
+            'title': TextInput(attrs={'class': 'input', 'placeholder': 'title'}),
+            'slug': TextInput(attrs={'class': 'input', 'placeholder': 'slug'}),
+            'keywords': TextInput(attrs={'class': 'input', 'placeholder': 'keywords'}),
+            'description': TextInput(attrs={'class': 'input', 'placeholder': 'description'}),
+            'image': FileInput(attrs={'class': 'input', 'placeholder': 'image', }),
+            'detail': CKEditorWidget(),  # Ckeditor input
+            'sehir': TextInput(attrs={'class': 'input', 'placeholder': 'sehir'}),
+            'ulke' : TextInput(attrs={'class': 'input', 'placeholder': 'ulke'}),
+        }
+
+        def get_absolute_url(self):
+            return reverse('addmekan', kwargs={'slug': self.slug})
+
 class Images(models.Model):
     mekan = models.ForeignKey(Mekan, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
@@ -87,6 +108,11 @@ class Images(models.Model):
 
 
 
+class MekanImageForm(ModelForm):
+    class Meta:
+        model = Images
+        fields = ['title', 'image']
+
 
 class Comment(models.Model):
     STATUS = (
@@ -95,6 +121,7 @@ class Comment(models.Model):
         ('False', 'Hayır'),
     )
     mekan = models.ForeignKey(Mekan, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     subject = models.CharField(max_length=50, blank=True)
     comment = models.TextField(max_length=200, blank=True)
     rate = models.IntegerField(blank=True)

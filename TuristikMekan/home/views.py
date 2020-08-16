@@ -7,7 +7,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from home.forms import SearchForm, SignUpForm
-from home.models import Setting, ContactFormu, ContactFormMessage, UserProfile
+from home.models import Setting, ContactFormu, ContactFormMessage, UserProfile, FAQ
 from mekan.models import Category, Mekan, Images, Comment
 
 
@@ -178,3 +178,14 @@ def signup_view(request):
                'setting': setting,
                }
     return render(request, 'signup.html', context)
+
+
+def faq(request):
+    setting = Setting.objects.get(pk=1)
+    category = Category.objects.all()
+    faq = FAQ.objects.all()
+    context = {'category': category,
+               'faq': faq,
+               'setting': setting,
+               }
+    return render(request, 'faq.html', context)

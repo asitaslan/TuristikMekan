@@ -5,13 +5,52 @@
 {% block description %} {{ mekan.description }}{% endblock %}
 
 {% block head %}
-    <link rel='shortcut icon' type='image/x-icon' href='{{ setting.icon.url }}' />
+    <link rel='shortcut icon' type='image/x-icon' href='{{ setting.icon.url }}' xmlns="http://www.w3.org/1999/html"/>
 {% endblock %}
 
 {% block sidebar %}
     {% include "sidebar.html" %}
 {% endblock %}
-
+<style>*{
+    margin: 0;
+    padding: 0;
+}
+.rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+}
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
+}
+.rate:not(:checked) > label:before {
+    content: '★ ';
+}
+.rate > input:checked ~ label {
+    color: #ffc700;
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+</style>
 {% block content %}
     <div class="span9">
         <ul class="breadcrumb">
@@ -26,11 +65,11 @@
                     <div id="myCarousel" class="carousel slide cntr">
                         <div class="carousel-inner">
                             <div class="item active">
-                                <a href="#"> <img src="{{ mekan.image.url }}" alt="" style="width:100%"></a>
+                                <a href="#"> <img src="{{ mekan.image.url }}" alt="" style="width:100%; height:250px;"></a>
                             </div>
                             {% for rs in images %}
                                 <div class="item">
-                                    <a href="#"> <img src="{{ rs.image.url }}" alt="" style="width:100%"></a>
+                                    <a href="#"> <img src="{{ rs.image.url }}" alt="" style="width:100%; height:250px;"></a>
                                 </div>
                             {% endfor %}
                         </div>
@@ -89,25 +128,25 @@
                         {% csrf_token %}
                         <h3>Yorum Yap</h3>
                         <div class="control-group">
-                            <label class="control-label">Konu <sup>*</sup></label>
+                            <label class="control-label">Konu <sup></sup></label>
                             <div class="controls">
                                 <input class="input" type="text" name="subject" id="id_subject" placeholder="Subject">
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Yorum yap <sup>*</sup></label>
+                            <label class="control-label">Yorum yap <sup></sup></label>
                             <div class="controls">
                                 <textarea class="input" name="comment" id="id_comment" placeholder="Your review"></textarea>
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Degerlendirme: <sup>*</sup></label>
-                            <div class="controls">
-                                <input type="radio" id="star5" name="rate" value="5"/>5<label for="star5"></label>
-                                <input type="radio" id="star4" name="rate" value="4"/>4<label for="star4"></label>
-                                <input type="radio" id="star3" name="rate" value="3"/>3<label for="star3"></label>
-                                <input type="radio" id="star2" name="rate" value="2"/>2<label for="star2"></label>
-                                <input type="radio" id="star1" name="rate" value="1"/>1<label for="star1"></label>
+                            <label class="control-label">Degerlendirme: <sup></sup></label>
+                            <div class="rate">
+                                <input type="radio" id="star5" name="rate" value="5" />
+                                <input type="radio" id="star4" name="rate" value="4" />
+                                <input type="radio" id="star3" name="rate" value="3" />
+                                <input type="radio" id="star2" name="rate" value="2" />
+                                <input type="radio" id="star1" name="rate" value="1" />
                             </div>
 
                         </div>
@@ -124,34 +163,25 @@
 
 
                     {% for rs in comments %}
-                        <table border="1">
-                            <tr>
-                                <th> Name  </th>
-                                <th><div><a href="#"><i class="fa fa-user-o"></i> <b>{{ rs.user.first_name }}</b></a> </div></th>
-                            </tr>
-                            <tr>
-                                <th> Date  </th>
-                                <th><div><a href="#"><i class="fa fa-user-o"></i> <b>{{ rs.created_at }}</b></a> </div></th>
-                            </tr>
-                            <tr>
-                                <th> Star </th>
-                                <th><div class="review-rating pull-right">
-                                    <i class="fa fa-star {% if rs.rate < 1 %}-o empty{% endif %}"></i>
-                                    <i class="fa fa-star {% if rs.rate < 2 %}-o empty{% endif %}"></i>
-                                    <i class="fa fa-star {% if rs.rate < 3 %}-o empty{% endif %}"></i>
-                                    <i class="fa fa-star {% if rs.rate < 4 %}-o empty{% endif %}"></i>
-                                    <i class="fa fa-star {% if rs.rate < 5 %}-o empty{% endif %}"></i>
-                                </div></th>
-                            </tr>
-                            <tr>
-                                <th> Comment </th>
-                                <th>
-                                    <div class="review-body"> <b>{{ rs.subject }}</b>
-                                        <p>{{ rs.comment }}</p>
+                        <div class="comment-list">
+                            <div claas="single-comment justify- content-between d-flex">
+                                <div class="User justify- content-between d-flex">
+                                    <div class="desc">
+                                        <p class="comment">
+                                            <b>{{ rs.subject }}</b><br>{{ rs.comment }}
+                                        </p>
+                                        <div class="d-flex justify- content-between">
+                                            <div class="d-flex align-items-center">
+                                                <h5 style="">
+                                                    {{ rs.user.first_name }}
+                                                </h5>
+                                                <p class="date">{{ rs.created_at }}, {{ rs.rate }}</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </th>
-                            </tr>
-                        </table>
+                                </div>
+                            </div>
+                        </div>
                     {% endfor %}
                 </div>
             </div>
