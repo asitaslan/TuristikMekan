@@ -23,6 +23,7 @@ def index(request):
 
                }
     return render(request, 'user_profile.html', context)
+
 @login_required(login_url='/login')  # Check login
 def user_update(request):
     setting = Setting.objects.get(pk=1)
@@ -117,6 +118,8 @@ def addmekan(request):
             data.image = form.cleaned_data['image']
             data.detail = form.cleaned_data['detail']
             data.slug = form.cleaned_data['slug']
+            data.sehir = form.cleaned_data['sehir']
+            data.ulke = form.cleaned_data['ulke']
             data.status = 'False'
             data.save()  # veritabanına kaydet
             messages.success(request, 'Your Content Insterted Successfuly')
